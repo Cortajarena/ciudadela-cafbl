@@ -1,0 +1,64 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options
+// https://github.com/microsoft/vscode-dev-containers/tree/
+//     v0.241.1/containers/python-3
+{
+    "name": "Python 3",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": "../",
+        "args": {
+            // Update 'VARIANT' to pick a Python version: 3, 3.10, 3.9, 3.8, 
+            // Append -bullseye or -buster to pin to an OS version.
+            // Use -bullseye variants on local on arm64/Apple Silicon.
+            "VARIANT": "3.9",
+            // Options
+            "NODE_VERSION": "16"
+        }
+    },
+    // Configure tool-specific properties.
+    "customizations": {
+        // Configure properties specific to VS Code.
+        "vscode": {
+            // Set *default* container specific settings.json values 
+            "settings": {
+                "python.defaultInterpreterPath": "/usr/local/bin/python",
+                "python.linting.enabled": true,
+                "workbench.colorTheme": "Default Dark+",
+                "jupyter.sendSelectionToInteractiveWindow": true,
+                "[python]": {
+                    "editor.rulers": [
+                        120
+                    ]
+                },
+                "[sql]": {
+                    "editor.rulers": [
+                        120
+                    ]
+                },
+                "editor.fontWeight": "normal",
+                "editor.fontSize": 11,
+                "editor.minimap.enabled": false,
+                "python.linting.pylintEnabled": false
+            },
+            // Add the IDs of extensions you want installed
+            "extensions": [
+                "ms-python.python",
+                "ms-python.vscode-pylance"
+            ]
+        }
+    },
+    // Use 'forwardPorts' to make them available locally.
+    // "forwardPorts": [],
+    // Use 'postCreateCommand' to run commands after the container is created.
+    // "postCreateCommand": "pip3 install --user -r requirements.txt",
+    // Comment out to connect as root instead. 
+    // More info: https://aka.ms/vscode-remote/containers/non-root.
+    // "remoteUser": "vscode",
+    "features": {
+        "jupyterlab": "latest"
+    },
+    "mounts": [
+        "source=${localEnv:HOME}/.config/gcloud,target=/root/.config/gcloud,type=bind,consistency=cached",
+        "source=${localEnv:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached"
+    ]
+}
