@@ -1,0 +1,21 @@
+version: '0.1'
+services:
+  devcontainer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VARIANT: 3.9
+        NODE_VERSION: 16
+    network_mode: service:selenium
+    volumes:
+      - ..:/workspaces
+      - ~/.ssh:/root/.ssh
+    command: sleep infinity
+  selenium:
+    image: selenium/standalone-firefox
+    restart: unless-stopped
+    ports:
+      - "7900:7900"
+      - "4444:4444"
+    shm_size: '2gb'
