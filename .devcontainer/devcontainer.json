@@ -3,18 +3,22 @@
 //     v0.241.1/containers/python-3
 {
     "name": "Python 3",
-    "build": {
-        "dockerfile": "Dockerfile",
-        "context": "../",
-        "args": {
-            // Update 'VARIANT' to pick a Python version: 3, 3.10, 3.9, 3.8, 
-            // Append -bullseye or -buster to pin to an OS version.
-            // Use -bullseye variants on local on arm64/Apple Silicon.
-            "VARIANT": "3.9",
-            // Options
-            "NODE_VERSION": "16"
-        }
-    },
+    "dockerComposeFile": "../docker-compose.yml",
+    "service": "devcontainer",
+    "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+    // "image": "mcr.microsoft.com/devcontainers/python:0-3.11",
+    // "build": {
+    //     "dockerfile": "../Dockerfile",
+    //     "context": "../",
+    //     "args": {
+    //         // Update 'VARIANT' to pick a Python version: 3, 3.10, 3.9, 3.8, 
+    //         // Append -bullseye or -buster to pin to an OS version.
+    //         // Use -bullseye variants on local on arm64/Apple Silicon.
+    //         "VARIANT": "3.9",
+    //         // Options
+    //         "NODE_VERSION": "16"
+    //     }
+    // },
     // Configure tool-specific properties.
     "customizations": {
         // Configure properties specific to VS Code.
@@ -27,7 +31,7 @@
                 "jupyter.sendSelectionToInteractiveWindow": true,
                 "[python]": {
                     "editor.rulers": [
-                        120
+                        80
                     ]
                 },
                 "[sql]": {
