@@ -31,7 +31,7 @@
                 "jupyter.sendSelectionToInteractiveWindow": true,
                 "[python]": {
                     "editor.rulers": [
-                        80
+                        120
                     ]
                 },
                 "[sql]": {
