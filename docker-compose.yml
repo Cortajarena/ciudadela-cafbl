@@ -7,7 +7,7 @@ services:
       args:
         VARIANT: 3.9
         NODE_VERSION: 16
-    network_mode: host
+    network_mode: service:selenium
     volumes:
       - ..:/workspaces
       - ~/.ssh:/root/.ssh
