@@ -35,32 +35,8 @@ def get_colegiat_cards(driver):
     return driver.find_elements(By.CLASS_NAME, "colegiat")
 
 
-def main(chrome_options: Options):
-    try:
-        driver = webdriver.Chrome(options=chrome_options)
-        driver.set_window_size(800, 600)
-        driver.get("http://www.ciudadela.eu")
-        time.sleep(5)
-    except Exception as shit:
-        logging.error(f"{shit} happened.")
-        return None
-    finally:
-        driver.quit()
+def get_results_for_page(driver):
 
-
-if __name__ == "__main__":
-
-
-    options = webdriver.ChromeOptions()
-    driver = webdriver.Remote(
-        'http://selenium:4444/wd/hub',
-        DesiredCapabilities.FIREFOX,
-        options=get_driver_options()
-    )
-    driver.get("https://www.cafbl.cat/ESP/02_ElColegiado/Buscador-Administradores")
-
-    search_province(driver, "Barcelona")
-    
     # we need to do this because every time we go back the cards object
     # gets unlinked to the driver object, so we need to select them again
     i = 0
@@ -97,5 +73,47 @@ if __name__ == "__main__":
         except IndexError:
             print(f"No more cards for index {i}.")
             break
+    return results
+
+
+def go_to_next_page(driver, page):
+    """
+    Recursive
+    """
+    paginator = driver.find_element(By.CLASS_NAME, "paginat")
+    try:
+        print(f'Going to page {page + 1}')
+        paginator.find_elements(By.LINK_TEXT, f"{page + 1}")[0].click()
+    except Exception as e:
+        print(f"Next page not found, trying next set of pages: \n {e}")
+        try:
+            paginator.find_elements(By.LINK_TEXT, "...")[0].click()
+        except:
+            raise(f"Next page not found, exiting: \n {e}")
+
+
+def main(options: Options = get_driver_options()):
+    driver = webdriver.Remote(
+        'http://0.0.0.0:4444/wd/hub',
+        DesiredCapabilities.FIREFOX,
+        options=options
+    )
+    driver.get("https://www.cafbl.cat/ESP/02_ElColegiado/Buscador-Administradores")
+    search_province(driver, "Barcelona")
+    results = get_results_for_page(driver)
+    page = 1
+    while True:
+        try:
+            go_to_next_page(driver, page)
+        except: 
+            break
+        results.extend(get_results_for_page(driver))
+        driver.save_screenshot("test.png")
+        page += 1
     pd.DataFrame(results).to_csv('barcelona.csv', index=False)
     driver.quit()
+
+
+if __name__ == "__main__":
+
+    main()
